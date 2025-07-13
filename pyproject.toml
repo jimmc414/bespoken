@@ -48,6 +48,9 @@ dev = [
 browser = [
     "playwright>=1.40.0",
 ]
+claude = [
+    "psutil>=5.9.0",  # For process detection
+]
 
 [project.scripts]
 bespoken = "bespoken.__main__:main"

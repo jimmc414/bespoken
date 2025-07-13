@@ -1,4 +1,9 @@
 from typing import Optional
+from pathlib import Path
+import warnings
+
+# Suppress the module loading warning
+warnings.filterwarnings("ignore", category=RuntimeWarning, message=".*found in sys.modules.*")
 
 import llm
 import typer
@@ -123,10 +128,25 @@ def dispatch_slash_command(command, user_commands, model, tools, conversation):
         return COMMAND_HANDLED, conversation
 
 
-def chat(
+def cli_chat(
     debug: bool = typer.Option(False, "--debug", "-d", help="Enable debug mode to see LLM interactions"),
     model_name: str = typer.Option("anthropic/claude-3-5-sonnet-20240620", "--model", "-m", help="LLM model to use"),
     system_prompt: Optional[str] = typer.Option(None, "--system", "-s", help="System prompt for the assistant"),
+):
+    """Run the bespoken chat assistant from CLI."""
+    return chat(
+        debug=debug,
+        model_name=model_name,
+        system_prompt=system_prompt,
+        tools=None,
+        slash_commands=None
+    )
+
+
+def chat(
+    debug: bool = False,
+    model_name: str = "anthropic/claude-3-5-sonnet-20240620",
+    system_prompt: Optional[str] = None,
     tools: list = None,
     slash_commands: dict = None,
 ):
@@ -148,12 +168,21 @@ def chat(
     
     
     try:
-        model = llm.get_model(model_name)
+        # Check if using claude via our simple wrapper
+        if "claude" in model_name.lower():
+            from .claude_simple import get_model
+            model = get_model(model_name)
+            ui.print("[cyan]Using Claude Code CLI[/cyan]")
+            ui.print("")
+        else:
+            # Use standard llm library
+            import llm
+            model = llm.get_model(model_name)
     except Exception as e:
         ui.print(f"[red]Error loading model '{model_name}': {e}[/red]")
         raise typer.Exit(1)
     
-    conversation = model.conversation(tools=tools)
+    conversation = model.conversation(system=system_prompt, tools=tools)
     
     try:
         while True:
@@ -197,20 +226,34 @@ def chat(
             response_started = False
             
             with Live(padded_spinner, console=console, refresh_per_second=10) as live:
-                for chunk in conversation.chain(out, system=system_prompt):
-                    if not response_started:
-                        # First chunk received, stop the spinner
-                        live.stop()
-                        response_started = True
-                        ui.print("")  # Add whitespace after spinner
-                        if config.DEBUG_MODE:
-                            ui.print("[magenta]>>> LLM Response:[/magenta]")
-                            ui.print("")
-                        # Initialize streaming state
-                        ui.start_streaming(ui.LEFT_PADDING)
-                    
-                    # Stream each chunk as it arrives
-                    ui.stream_chunk(chunk, ui.LEFT_PADDING)
+                # Check if model supports streaming
+                if hasattr(conversation, 'stream'):
+                    # Use streaming for Claude Code and other models that support it
+                    for chunk in conversation.stream(out):
+                        if not response_started:
+                            # First chunk received, stop the spinner
+                            live.stop()
+                            response_started = True
+                            ui.print("")  # Add whitespace after spinner
+                            if config.DEBUG_MODE:
+                                ui.print("[magenta]>>> LLM Response:[/magenta]")
+                                ui.print("")
+                            # Initialize streaming state
+                            ui.start_streaming(ui.LEFT_PADDING)
+                        
+                        # Stream each chunk as it arrives
+                        ui.stream_chunk(chunk.text, ui.LEFT_PADDING)
+                else:
+                    # Fallback for non-streaming models
+                    response = conversation.chain(out, system=system_prompt)
+                    live.stop()
+                    response_started = True
+                    ui.print("")  # Add whitespace after spinner
+                    if config.DEBUG_MODE:
+                        ui.print("[magenta]>>> LLM Response:[/magenta]")
+                        ui.print("")
+                    # Print the full response
+                    ui.print(response.text() if hasattr(response, 'text') else str(response))
                 
                 # Finish streaming and print any remaining text
                 if response_started:
@@ -224,7 +267,7 @@ def chat(
 
 def main():
     """Main entry point for the bespoken CLI."""
-    typer.run(chat)
+    typer.run(cli_chat)
 
 
 if __name__ == "__main__":

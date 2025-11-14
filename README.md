@@ -13,9 +13,11 @@
 A terminal chat experience that you can configure yourself.
 ```
 
-## Featured Project: Self-Improving Malbolge Compiler
+## Featured Projects: Malbolge & P vs NP
 
-Bespoken now includes a complete **self-improving optimizing compiler for Malbolge** - one of the most ambitious programming projects possible! This meta-circular compiler is written in Malbolge itself and can autonomously improve its own performance through evolutionary optimization.
+### 1. Self-Improving Malbolge Compiler
+
+Bespoken includes a complete **self-improving optimizing compiler for Malbolge** - one of the most ambitious programming projects possible! This meta-circular compiler is written in Malbolge itself and can autonomously improve its own performance through evolutionary optimization.
 
 🔥 **[Explore the Malbolge Compiler →](malbolge/)**
 
@@ -32,7 +34,30 @@ cd malbolge
 python demo.py  # See the complete system in action
 ```
 
-See the [Malbolge Guide](malbolge/GUIDE.md) for complete documentation.
+### 2. P vs NP Diplomatic Solution 🏛️
+
+A groundbreaking **philosophical exploration** of the P vs NP problem using Malbolge programs to represent different perspectives and achieve unanimous diplomatic consensus.
+
+🎯 **[Explore P vs NP Solution →](malbolge/p_vs_np/)**
+
+**Three Programs, Three Perspectives:**
+- **P_EQUALS_NP.mal** (9 bytes) - The Optimist's convergence, 43.8% optimization
+- **P_NOT_EQUALS_NP.mal** (13 bytes) - The Realist's barriers, irreducible core
+- **DIPLOMATIC_UNITY.mal** (16 bytes) - The Council's synthesis, balanced wisdom
+
+**The Council of Programmers voted 7-0** to adopt the diplomatic solution:
+> "Focus not on proving P = NP or P ≠ NP, but on what we learn by asking. Both perspectives illuminate truth."
+
+**Why Malbolge?** Reading Malbolge is easy (verification), writing it took 2 years (generation) - the perfect metaphor for P vs NP!
+
+**Explore:**
+```bash
+cd malbolge/p_vs_np
+python generator.py  # Generate and analyze the programs
+cat README.md        # Read the full philosophy
+```
+
+See the [Malbolge Guide](malbolge/GUIDE.md) and [P vs NP Guide](malbolge/p_vs_np/GUIDE.md) for complete documentation.
 
 ---
 
@@ -222,9 +247,40 @@ Running optimization passes...
 
 Starting evolution...
 [Shows progress and fitness improvements]
+
+> Tell me about the P vs NP diplomatic solution
+
+The P vs NP Diplomatic Solution explores one of computer science's
+deepest questions using three Malbolge programs...
+[Explains the philosophy and shows the programs]
 ```
 
 See [examples/malbolge_assistant.py](examples/malbolge_assistant.py) for a complete working example.
+
+### Exploring P vs NP
+
+The P vs NP diplomatic solution demonstrates philosophical synthesis:
+
+```bash
+# Read the philosophy
+cat malbolge/p_vs_np/README.md
+
+# See the Council's debate
+cat malbolge/p_vs_np/COUNCIL_PROCEEDINGS.md
+
+# Generate and analyze the programs
+cd malbolge/p_vs_np && python generator.py
+
+# View the actual Malbolge code
+cat malbolge/p_vs_np/*.mal
+```
+
+Or ask the Malbolge assistant about it:
+```
+> Explain the P vs NP diplomatic solution
+> Show me the three programs and their optimizations
+> What did the Council of Programmers decide?
+```
 
 ## Project Structure
 
@@ -240,11 +296,22 @@ bespoken/
 │   ├── generator.py       # Code generator
 │   ├── optimizer.py       # Optimization engine
 │   ├── self_improve.py    # Self-improvement system
+│   ├── p_vs_np/           # 🏛️ P vs NP Diplomatic Solution
+│   │   ├── P_EQUALS_NP.mal           # The Optimist's program
+│   │   ├── P_NOT_EQUALS_NP.mal       # The Realist's program
+│   │   ├── DIPLOMATIC_UNITY.mal      # The Council's synthesis
+│   │   ├── README.md                 # Philosophy and overview
+│   │   ├── GUIDE.md                  # Usage guide
+│   │   ├── COUNCIL_PROCEEDINGS.md    # Full debate transcript
+│   │   ├── CODE_ANALYSIS.md          # Technical analysis
+│   │   └── generator.py              # Program generator
 │   ├── tests/             # Test suite
 │   ├── examples/          # Example programs
 │   └── docs/              # Documentation
 └── examples/
-    └── malbolge_assistant.py  # Bespoken + Malbolge demo
+    ├── malbolge_assistant.py   # Bespoken + Malbolge demo
+    ├── malbolge_workflow.py    # Automated workflows
+    └── malbolge_quickstart.py  # Quick start example
 ```
 
 ## Contributing

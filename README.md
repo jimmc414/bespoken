@@ -13,6 +13,29 @@
 A terminal chat experience that you can configure yourself.
 ```
 
+## Featured Project: Self-Improving Malbolge Compiler
+
+Bespoken now includes a complete **self-improving optimizing compiler for Malbolge** - one of the most ambitious programming projects possible! This meta-circular compiler is written in Malbolge itself and can autonomously improve its own performance through evolutionary optimization.
+
+🔥 **[Explore the Malbolge Compiler →](malbolge/)**
+
+**Key Features:**
+- Complete Malbolge VM implementation
+- Programmatic code generator (essential for Malbolge)
+- Multi-pass optimization engine with genetic algorithms
+- Self-improving compiler that evolves over generations
+- Comprehensive documentation, tests, and examples
+
+**Quick Demo:**
+```bash
+cd malbolge
+python demo.py  # See the complete system in action
+```
+
+See the [Malbolge Guide](malbolge/GUIDE.md) for complete documentation.
+
+---
+
 ## Installation
 
 Basic installation:
@@ -162,4 +185,73 @@ chat(
 
 You can swap out the AI engine between Claude Code CLI (for speed and offline use) or API-based models (for broader model selection and LLM feature set) as you see fit.
 
+## Using Bespoken with Malbolge
+
+The Malbolge compiler integrates seamlessly with bespoken. Create an AI assistant that can help you work with Malbolge code:
+
+```python
+from bespoken import chat
+from bespoken.tools import MalbolgeTool
+
+chat(
+    model_name="claude",
+    tools=[MalbolgeTool()],
+    system_prompt="""You are a Malbolge programming expert. You can:
+    - Generate Malbolge programs
+    - Optimize existing code
+    - Explain how Malbolge programs work
+    - Run and debug Malbolge programs
+    - Evolve the compiler to improve performance
+    """
+)
+```
+
+**Example session:**
+```
+> Generate a simple Malbolge program that outputs 'Hi'
+
+I'll create a Malbolge program for you...
+[Uses MalbolgeTool to generate and test code]
+
+> Now optimize it to make it smaller
+
+Running optimization passes...
+[Shows before/after code size]
+
+> Evolve the compiler for 20 generations
+
+Starting evolution...
+[Shows progress and fitness improvements]
+```
+
+See [examples/malbolge_assistant.py](examples/malbolge_assistant.py) for a complete working example.
+
+## Project Structure
+
+```
+bespoken/
+├── src/bespoken/          # Main framework
+│   ├── tools/             # Built-in tools
+│   │   ├── malbolge.py    # Malbolge integration tool
+│   │   └── ...
+│   └── ...
+├── malbolge/              # Self-improving Malbolge compiler
+│   ├── vm.py              # Virtual machine
+│   ├── generator.py       # Code generator
+│   ├── optimizer.py       # Optimization engine
+│   ├── self_improve.py    # Self-improvement system
+│   ├── tests/             # Test suite
+│   ├── examples/          # Example programs
+│   └── docs/              # Documentation
+└── examples/
+    └── malbolge_assistant.py  # Bespoken + Malbolge demo
+```
+
+## Contributing
+
+Contributions are welcome! Whether you're improving the bespoken framework or enhancing the Malbolge compiler, we'd love your help.
+
+## License
+
+MIT License - See LICENSE file for details
 
